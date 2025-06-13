@@ -30,6 +30,21 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     marginBottom: 4,
     marginTop: 4,
-    backgroundColor: COLORS.input.primary
+    backgroundColor: COLORS.input.primary,
+  },
+  loading: {
+    height: "100%",
+    width: "100%",
+    position: "absolute",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+    zIndex: 9999,
+    opacity: 0.8,
+  },
+  textLoading: {
+    color: COLORS.active,
+    textAlign: "center",
   },
 });
