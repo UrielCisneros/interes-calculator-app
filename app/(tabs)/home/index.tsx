@@ -9,7 +9,7 @@ import { Button, TextInput } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
-  const { formatMoney, CalculateInterest } = useFinance();
+  const { formatMoney, calculateInterest } = useFinance();
 
   const [money, setMoney] = useState<string>("");
   const [years, setYears] = useState<string>("");
@@ -19,19 +19,25 @@ const HomeScreen = () => {
 
   const [data, setData] = useState({});
 
-  const handleSendData = () => {
+  const handleSendData = async() => {
     setLoading(true);
+    const data = await calculateInterest({
+      money_saving_years: 0,
+      savings_now: 1000000,
+      interested_years: 5,
+      interest: 0.09,
+    });
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 500);
   };
 
   const handleChangeMoney = (money: string) => {
-    if(money === '') return setMoney('');
-    const moneyConvert = Number(money.replaceAll(',',""));
+    if (money === "") return setMoney("");
+    const moneyConvert = Number(money.replaceAll(",", ""));
     if (isNaN(moneyConvert)) return;
     const moneyFormat = formatMoney(Number(moneyConvert));
-    setMoney(moneyFormat.slice(0,-3));
+    setMoney(moneyFormat.slice(0, -3));
   };
 
   return (

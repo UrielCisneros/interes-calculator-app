@@ -1,8 +1,8 @@
 import Currency from "currency-formatter";
 
 interface CalculateInterestProps {
-  money_saving_years?: number;
-  savings_now: number;
+  money_saving_years?: number; //Dinero que puedes ahorrar por año
+  savings_now: number; //Dinero que ya tienes ahorrado y con el cual iniciaras
   interested_years: number;
   interest: number;
 }
@@ -18,16 +18,16 @@ const useFinance = () => {
     money_saving_years: number
   ) => Number(saving_for_now - savings_now - year * money_saving_years);
 
-  const CalculateInterest = ({
-    money_saving_years = 0,
-    savings_now,
-    interested_years,
-    interest,
+  const calculateInterest = async ({
+    money_saving_years = 0, //Dinero que puedes ahorrar por año
+    savings_now, //Dinero que ya tienes ahorrado y con el cual iniciaras
+    interested_years, //Años que estaras ahorrando
+    interest,//Interes que ganaras anual
   }: CalculateInterestProps) => {
     let saving_calculate_years = savings_now;
     let temp_gain_year = 0;
 
-    const data = [];
+    const dataYears = [];
 
     for (let i = 0; i < interested_years; i++) {
       saving_calculate_years += saving_calculate_years * interest;
@@ -39,31 +39,34 @@ const useFinance = () => {
         money_saving_years
       );
       temp_gain_year = gain - temp_gain_year;
-      data.push({
+      dataYears.push({
         id: i,
         current_year: i + 1,
         total_gains: formatMoney(parseFloat(saving_calculate_years.toFixed(2))),
         gain_for_year: gain,
         gain_without_berore_gain: formatMoney(temp_gain_year),
-        mouth_gain: formatMoney(temp_gain_year / 12)
-      });
-      console.table({
-        Ahorro_por_año: `$${formatMoney(
-          parseFloat(saving_calculate_years.toFixed(2))
-        )}`,
-        Año_de_ahorro: i + 1,
-        Ganancia_total: `$${formatMoney(gain)}`,
-        Ganacia_por_año_actual: `$${formatMoney(temp_gain_year)}`,
-        Ganancia_por_mes: `$${formatMoney(temp_gain_year / 12)}`,
+        mouth_gain: formatMoney(temp_gain_year / 12),
       });
     }
 
-    return data;
+    return {
+      savings: formatMoney(Number(saving_calculate_years.toFixed(2))),
+      years: interested_years,
+      total_gain: formatMoney(
+        calculate_gain(
+          saving_calculate_years,
+          interested_years,
+          savings_now,
+          money_saving_years
+        )
+      ),
+      calculate_years: dataYears,
+    };
   };
 
   return {
     formatMoney,
-    CalculateInterest
+    calculateInterest,
   };
 };
 
