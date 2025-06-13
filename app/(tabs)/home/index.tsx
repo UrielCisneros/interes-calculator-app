@@ -18,13 +18,35 @@ const HomeScreen = () => {
 
   const [data, setData] = useState({});
 
+  const formatClearMoney = (money: string) => {
+    if (money === "") return 0;
+    const moneyConvert = Number(money.replaceAll(",", ""));
+    if (isNaN(moneyConvert)) return 0;
+    return moneyConvert;
+  };
+
+  const formatMoneyStirng = (money: string) => {
+    if (money === "") return "";
+    const moneyConvert = Number(money.replaceAll(",", ""));
+    if (isNaN(moneyConvert)) return "";
+    const moneyFormat = formatMoney(Number(moneyConvert));
+    return moneyFormat.slice(0, -3);
+  };
+
+  const formatData = (interest: string) => {
+    const convertInterest = Number(interest.replaceAll("%",""));
+    const isDecimal = interest.includes('.');
+    if(!isDecimal) return convertInterest / 100;
+    return convertInterest;
+  }
+
   const handleSendData = async () => {
     setLoading(true);
     const id = await calculateInterest({
-      money_saving_years: 0,
-      savings_now: 1000000,
-      interested_years: 5,
-      interest: 0.09,
+      money_saving_years: formatClearMoney(moreMoneyYear),
+      savings_now: formatClearMoney(money),
+      interested_years: Number(years),
+      interest: formatData(interestYear),
     });
     setTimeout(async () => {
       setLoading(false);
@@ -32,13 +54,10 @@ const HomeScreen = () => {
     }, 500);
   };
 
-  const handleChangeMoney = (money: string) => {
-    if (money === "") return setMoney("");
-    const moneyConvert = Number(money.replaceAll(",", ""));
-    if (isNaN(moneyConvert)) return;
-    const moneyFormat = formatMoney(Number(moneyConvert));
-    setMoney(moneyFormat.slice(0, -3));
-  };
+  const handleChangeMoney = (money: string) =>
+    setMoney(formatMoneyStirng(money));
+  const handleChangeMoneySaving = (money: string) =>
+    setMoreMoneyYear(formatMoneyStirng(money));
 
   return (
     <SafeAreaView style={globalStyles.bgColor}>
@@ -120,7 +139,7 @@ const HomeScreen = () => {
             <CustomInput
               label="Dinero a ahorrar"
               value={moreMoneyYear}
-              onChangeVal={(text) => setMoreMoneyYear(text)}
+              onChangeVal={(text) => handleChangeMoneySaving(text)}
               left={
                 <TextInput.Icon
                   color={(isTextInputFocused: boolean) =>

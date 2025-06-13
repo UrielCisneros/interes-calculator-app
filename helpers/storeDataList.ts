@@ -1,28 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DataCalculate } from "./interfaces";
 
 const NAME_DATA_STORAGE = "data";
 
-interface ListDataInterest {
-  id: number;
-  current_year: number;
-  total_gains: string;
-  gain_for_year: number;
-  gain_without_berore_gain: string;
-  mouth_gain: string;
-}
 
-interface DataCalculate {
-  id: string;
-  savings: string;
-  years: number;
-  total_gain: string;
-  calculate_years: ListDataInterest[];
-}
 
 export const getData = async () => {
   try {
     const value = await AsyncStorage.getItem(NAME_DATA_STORAGE);
-    console.log(JSON.stringify(value, null, 2));
     if (value === null) return false;
     return convertDataOfArray(value);
   } catch (error) {
@@ -65,6 +50,16 @@ export const removeDataOfStorage = async () => {
 
 export const initialData = async () => {
   const data = await getData();
-  console.log(JSON.stringify(data, null, 2));
   if (!data) return await AsyncStorage.setItem(NAME_DATA_STORAGE, "[]");
+};
+
+export const getItemList = async (id: string) => {
+  const data = await getData();
+  if (!data)
+    return {
+      status: 1,
+      message: "No found",
+      data: -1,
+    };
+  return data.find((item) => item.id === id);
 };

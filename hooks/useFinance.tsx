@@ -60,6 +60,7 @@ const useFinance = () => {
       const finalArrayData = {
         id: generateId(),
         savings: formatMoney(Number(saving_calculate_years.toFixed(2))),
+        savings_now: savings_now,
         years: interested_years,
         total_gain: formatMoney(
           calculate_gain(

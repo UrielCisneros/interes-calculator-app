@@ -12,7 +12,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     initialData();
-    // removeDataOfStorage()
+    // removeDataOfStorage();
   }, []);
 
   if (!loaded && !error) return null;
