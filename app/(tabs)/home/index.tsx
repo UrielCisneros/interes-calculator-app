@@ -4,9 +4,8 @@ import { COLORS } from "@/constants/Colors";
 import useFinance from "@/hooks/useFinance";
 import { globalStyles } from "@/styles/global-styles";
 import React, { useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
   const { formatMoney, calculateInterest } = useFinance();
@@ -19,16 +18,17 @@ const HomeScreen = () => {
 
   const [data, setData] = useState({});
 
-  const handleSendData = async() => {
+  const handleSendData = async () => {
     setLoading(true);
-    const data = await calculateInterest({
+    const id = await calculateInterest({
       money_saving_years: 0,
       savings_now: 1000000,
       interested_years: 5,
       interest: 0.09,
     });
-    setTimeout(() => {
+    setTimeout(async () => {
       setLoading(false);
+      //redirect view data
     }, 500);
   };
 
@@ -41,13 +41,54 @@ const HomeScreen = () => {
   };
 
   return (
-    <SafeAreaProvider style={globalStyles.bgColor}>
-      <SafeAreaView>
-        <View style={[globalStyles.bgColor, globalStyles.justifyScreen]}>
-          <CustomLoader loading={loading} />
+    <SafeAreaView style={globalStyles.bgColor}>
+      <View style={[globalStyles.bgColor, globalStyles.justifyScreen]}>
+        <CustomLoader loading={loading} />
+        <ScrollView>
           <View style={globalStyles.contain}>
             <View>
               <Text style={[globalStyles.h1]}>Calculador de intereses</Text>
+              <View>
+                <Text
+                  style={[globalStyles.h2, { fontFamily: "ChakraPetchBold" }]}
+                >
+                  Descripcion
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginVertical: 10,
+                  }}
+                >
+                  <Text style={[globalStyles.textPoint]}>
+                    1.-Dinero a invertir:
+                    <Text style={[globalStyles.subTextPoint]}>
+                      {` `}Dinero que tienes liquido para invertor o inversion
+                      inicial.
+                    </Text>
+                  </Text>
+                  <Text style={[globalStyles.textPoint]}>
+                    2.-Años a invertir:
+                    <Text style={[globalStyles.subTextPoint]}>
+                      {` `}Cantidad de años que desea invertir su dinero.
+                    </Text>
+                  </Text>
+                  <Text style={[globalStyles.textPoint]}>
+                    3.-Dinero a ahorrar:
+                    <Text style={[globalStyles.subTextPoint]}>
+                      {` `}Dinero que puede ahorrar por año, y seguir metiendo
+                      (sin contar inversion inicial).
+                    </Text>
+                  </Text>
+                  <Text style={[globalStyles.textPoint]}>
+                    4.-Interes anual:
+                    <Text style={[globalStyles.subTextPoint]}>
+                      {` `}Numero de interes que generara anual (ejemplo: 0.09%)
+                    </Text>
+                  </Text>
+                </View>
+              </View>
             </View>
             <CustomInput
               label="Dinero a invertir"
@@ -116,9 +157,9 @@ const HomeScreen = () => {
               Press me
             </Button>
           </View>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

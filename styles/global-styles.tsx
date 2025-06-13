@@ -7,24 +7,45 @@ export const globalStyles = StyleSheet.create({
   },
   justifyScreen: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: "column",
+    // justifyContent: "center",
     alignItems: "center",
     height: "100%",
     backgroundColor: COLORS.primary,
+    paddingTop: 30
   },
   mainText: {
     color: COLORS.secondary,
   },
   contain: {
-    height: "50%",
-    width: "90%",
+    margin: 15
   },
   h1: {
-    textAlign: "center",
+    textAlign: "left",
     fontSize: 30,
     color: "white",
-    margin: 10,
+    fontFamily: "ChakraPetchBold",
+  },
+  h2: {
+    textAlign: "center",
+    fontSize: 18,
+    color: "white",
+    fontFamily: "ChakraPetchRegular",
+  },
+  textPoint: {
+    textAlign: "left",
+    fontSize: 18,
+    fontFamily: "ChakraPetchBold",
+    color: COLORS.active,
+    marginRight: 5,
+    fontWeight: 'bold',
+    marginVertical: 3
+  },
+  subTextPoint: {
+    textAlign: "left",
+    fontSize: 16,
+    fontFamily: "ChakraPetchRegular",
+    color: "white",
   },
   input: {
     width: "100%",
