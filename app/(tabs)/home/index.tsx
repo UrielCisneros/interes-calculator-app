@@ -9,7 +9,7 @@ import { Button, TextInput } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
-  const { formatMoney } = useFinance();
+  const { formatMoney, CalculateInterest } = useFinance();
 
   const [money, setMoney] = useState<string>("");
   const [years, setYears] = useState<string>("");
