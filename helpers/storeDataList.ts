@@ -1,7 +1,7 @@
+import { NAME_DATA_STORAGE } from "@/constants/DataStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DataCalculate } from "./interfaces";
 
-const NAME_DATA_STORAGE = "data";
 
 
 
