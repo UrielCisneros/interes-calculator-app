@@ -1,3 +1,4 @@
+import { ListDataInterest } from "@/helpers/interfaces";
 import { globalStyles } from "@/styles/global-styles";
 import React from "react";
 import { StyleProp, View, ViewStyle } from "react-native";
@@ -6,7 +7,15 @@ import CustomText from "./CustomText";
 
 // const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
-const CustomCardListInteret = () => {
+interface Props extends PropsText {
+  item: ListDataInterest;
+}
+
+interface PropsText {
+  index: number;
+}
+
+const CustomCardListInteret = ({ item, index }: Props) => {
   const styleContentText: StyleProp<ViewStyle> = {
     justifyContent: "space-between",
   };
@@ -19,29 +28,28 @@ const CustomCardListInteret = () => {
         title={
           <CustomText
             title="Ganancia Total:"
-            subTitle="$20,000"
+            subTitle={`$${item.total_gains}`}
             styleContent={styleContentText}
-            
           />
         }
         subtitle={
           <CustomText
             title="Ganancia del año:"
-            subTitle="$10,000"
+            subTitle={`$${item.gain_for_year.toFixed(2)}`}
             styleContent={styleContentText}
           />
         }
-        left={() => <TextFloat />}
+        left={() => <TextFloat index={item.current_year} />}
       />
       <Card.Content>
         <CustomText
           title="Ganancia sin año actual"
-          subTitle="$9,000"
+          subTitle={`$${item.gain_without_berore_gain}`}
           styleContent={styleContentText}
         />
         <CustomText
           title="Ganancia por mes:"
-          subTitle="$3,000"
+          subTitle={`$${item.mouth_gain}`}
           styleContent={styleContentText}
         />
       </Card.Content>
@@ -49,7 +57,7 @@ const CustomCardListInteret = () => {
   );
 };
 
-const TextFloat = () => {
+const TextFloat = ({ index }: PropsText) => {
   return (
     <View style={globalStyles.contentTextCardListInteres}>
       <Text
@@ -59,7 +67,7 @@ const TextFloat = () => {
           color: "white",
         }}
       >
-        1
+        {index}
       </Text>
     </View>
   );

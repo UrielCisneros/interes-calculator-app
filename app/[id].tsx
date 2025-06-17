@@ -1,42 +1,58 @@
-import CustomCardListInteret from '@/components/CustomCardListInteret';
-import CustomText from '@/components/CustomText';
-import { globalStyles } from '@/styles/global-styles';
-import { useLocalSearchParams } from 'expo-router';
-import React from 'react';
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { AnimatedContentScroll } from "@/components/AnimatedScroll";
+import CustomCardListInteret from "@/components/CustomCardListInteret";
+import CustomText from "@/components/CustomText";
+import { DataCalculate } from "@/helpers/interfaces";
+import { getItemList } from "@/helpers/storeDataList";
+import { globalStyles } from "@/styles/global-styles";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { FlatList, SafeAreaView, ScrollView, View } from "react-native";
 
 const ViewListInterest = () => {
-    const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
+  const [data, setData] = useState<DataCalculate>();
 
-    console.log(id)
+  const getDataForId = async () => {
+    const productId = Array.isArray(id) ? id[0] : id;
+    const data = await getItemList(productId);
+    setData(data);
+    console.log({ id, data });
+  };
+
+  useEffect(() => {
+    getDataForId();
+  }, [id]);
+
   return (
     <SafeAreaView style={globalStyles.bgColor}>
       <View style={[globalStyles.bgColor, globalStyles.justifyScreen]}>
         <ScrollView>
-
-        <Text style={globalStyles.h1} >Detalle</Text>
-        <View style={{marginBottom: 20}}>
-          <CustomText title='Inversion inicial' subTitle='$10,000' />
-          <CustomText title='Años de inversion' subTitle='5' />
-          <CustomText title='Ahorro por año' subTitle='$10,000' />
-          <CustomText title='Interes anual' subTitle='0.09%' />
-          <CustomText title='Ganancia neta' subTitle='$5,000' />
-          <CustomText title='Interes anual' subTitle='0.09%' />
-        </View>
-
-        <CustomCardListInteret />
-        <CustomCardListInteret /> 
-        <CustomCardListInteret />
-        <CustomCardListInteret />
-        <CustomCardListInteret />
-        <CustomCardListInteret />
-        <CustomCardListInteret />
-        <CustomCardListInteret />
-        <CustomCardListInteret />
+          <View style={{ marginBottom: 20 }}>
+            <CustomText
+              title="Inversion inicial"
+              subTitle={`$${data?.savings_now}`}
+            />
+            <CustomText title="Años de inversion" subTitle={`${data?.years}`} />
+            {/* <CustomText title="Ahorro por año" subTitle={`$${data?.savings}`} /> */}
+            <CustomText
+              title="Ganancia neta"
+              subTitle={`$${data?.total_gain}`}
+            />
+            <CustomText title="Interes anual" subTitle={`${data?.interest}%`} />
+          </View>
+          <FlatList
+            data={data?.calculate_years}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <AnimatedContentScroll index={index} key={item.id}>
+                <CustomCardListInteret item={item} index={index}  />
+              </AnimatedContentScroll>
+            )}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default ViewListInterest
+export default ViewListInterest;

@@ -1,10 +1,11 @@
+import { AnimatedContentScroll } from '@/components/AnimatedScroll'
 import CustomCard from '@/components/CustomCard'
 import CustomLoader from '@/components/CustomLoader'
-import { DataCalculate } from '@/helpers/interfaces'
 import { getData } from '@/helpers/storeDataList'
 import { globalStyles } from '@/styles/global-styles'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, Text, View } from 'react-native'
+import { FlatList, SafeAreaView, Text, View } from 'react-native'
+import { PropsListItem } from '../history'
 
 const FavoriteScreen = () => {
     const [loading, setLoading] = useState(false);
@@ -35,9 +36,15 @@ const FavoriteScreen = () => {
             margin: 10,
           }}
         >
-          {dataList.map((item: DataCalculate) => (
-            <CustomCard key={item.id} item={item} />
-          ))}
+          <FlatList
+            data={dataList}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item, index }: PropsListItem) => (
+              <AnimatedContentScroll index={index} key={item.id}>
+                <CustomCard key={item.id} item={item} />
+              </AnimatedContentScroll>
+            )}
+          />
         </View>
       </View>
     </SafeAreaView>

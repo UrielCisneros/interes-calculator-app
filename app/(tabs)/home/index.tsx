@@ -3,8 +3,9 @@ import CustomLoader from "@/components/CustomLoader";
 import { COLORS } from "@/constants/Colors";
 import useFinance from "@/hooks/useFinance";
 import { globalStyles } from "@/styles/global-styles";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Alert, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 
 const HomeScreen = () => {
@@ -15,6 +16,7 @@ const HomeScreen = () => {
   const [moreMoneyYear, setMoreMoneyYear] = useState<string>("");
   const [interestYear, setInterestYear] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const navigationRouter = useRouter();
 
   const [data, setData] = useState({});
 
@@ -34,13 +36,14 @@ const HomeScreen = () => {
   };
 
   const formatData = (interest: string) => {
-    const convertInterest = Number(interest.replaceAll("%",""));
-    const isDecimal = interest.includes('.');
-    if(!isDecimal) return convertInterest / 100;
+    const convertInterest = Number(interest.replaceAll("%", ""));
+    const isDecimal = interest.includes(".");
+    if (!isDecimal) return convertInterest / 100;
     return convertInterest;
-  }
+  };
 
   const handleSendData = async () => {
+    if (money === "" || years === "" || moreMoneyYear === "" || interestYear === "") return Alert.alert("Ingrese todos los campos.")
     setLoading(true);
     const id = await calculateInterest({
       money_saving_years: formatClearMoney(moreMoneyYear),
@@ -50,7 +53,8 @@ const HomeScreen = () => {
     });
     setTimeout(async () => {
       setLoading(false);
-      //redirect view data
+      navigationRouter.push(`/${id}`);
+      resetData();
     }, 500);
   };
 
@@ -58,6 +62,14 @@ const HomeScreen = () => {
     setMoney(formatMoneyStirng(money));
   const handleChangeMoneySaving = (money: string) =>
     setMoreMoneyYear(formatMoneyStirng(money));
+
+  const resetData = () => {
+    setMoney("");
+    setInterestYear("");
+    setMoreMoneyYear("");
+    setYears('');
+  }
+
 
   return (
     <SafeAreaView style={globalStyles.bgColor}>

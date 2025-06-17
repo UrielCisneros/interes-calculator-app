@@ -1,3 +1,4 @@
+import { DataCalculate } from "@/helpers/interfaces";
 import { setDataOneMore } from "@/helpers/storeDataList";
 import Currency from "currency-formatter";
 
@@ -57,11 +58,12 @@ const useFinance = () => {
         });
       }
 
-      const finalArrayData = {
+      const finalArrayData: DataCalculate = {
         id: generateId(),
         savings: formatMoney(Number(saving_calculate_years.toFixed(2))),
-        savings_now: savings_now,
+        savings_now: formatMoney(savings_now),
         years: interested_years,
+        interest,
         total_gain: formatMoney(
           calculate_gain(
             saving_calculate_years,
@@ -73,8 +75,7 @@ const useFinance = () => {
         calculate_years: dataYears,
       };
       const id = await setDataOneMore(finalArrayData);
-      console.log({id})
-      return finalArrayData;
+      return id;
     } catch (error) {
       console.log(error);
     }

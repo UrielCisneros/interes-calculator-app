@@ -12,7 +12,7 @@ export const globalStyles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     backgroundColor: COLORS.primary,
-    paddingTop: 30,
+    paddingTop: 20,
     marginHorizontal: 20,
   },
   mainText: {

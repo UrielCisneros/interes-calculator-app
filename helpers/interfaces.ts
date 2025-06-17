@@ -12,8 +12,9 @@ export interface ListDataInterest {
 export interface DataCalculate {
   id: string;
   savings: string;
-  savings_now: number;
+  savings_now: string;
   years: number;
+  interest: number;
   total_gain: string;
   calculate_years: ListDataInterest[];
 }
