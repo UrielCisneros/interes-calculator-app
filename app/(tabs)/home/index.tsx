@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { Alert, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 
+
 const HomeScreen = () => {
   const { formatMoney, calculateInterest } = useFinance();
 

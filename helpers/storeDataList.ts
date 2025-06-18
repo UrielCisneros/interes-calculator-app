@@ -4,9 +4,6 @@ import { DataCalculate } from "./interfaces";
 export const getData = async (key: string) => {
   try {
     const value = await AsyncStorage.getItem(key);
-    console.log({
-      value
-    })
     if (value === null) return false;
     return convertDataOfArray(value);
   } catch (error) {
@@ -17,7 +14,6 @@ export const getData = async (key: string) => {
 export const setDataOneMore = async (data: DataCalculate, key: string) => {
   try {
     let getInfo = await getData(key);
-    console.log(getInfo)
     if (!getInfo) return false;
     getInfo.push(data);
     await AsyncStorage.setItem(key, JSON.stringify(getInfo));
