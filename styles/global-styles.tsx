@@ -13,7 +13,7 @@ export const globalStyles = StyleSheet.create({
     height: "100%",
     backgroundColor: COLORS.primary,
     paddingTop: 20,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
   },
   mainText: {
     color: COLORS.secondary,

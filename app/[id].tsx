@@ -1,4 +1,4 @@
-import { AnimatedContentScroll } from "@/components/AnimatedScroll";
+// import { AnimatedContentScroll } from "@/components/AnimatedScroll";
 import CustomCardListInteret from "@/components/CustomCardListInteret";
 import CustomText from "@/components/CustomText";
 import { DataCalculate } from "@/helpers/interfaces";
@@ -6,7 +6,8 @@ import { getItemList } from "@/helpers/storeDataList";
 import { globalStyles } from "@/styles/global-styles";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, ScrollView, View } from "react-native";
+import { FlatList, SafeAreaView, View } from "react-native";
+import { AnimatedContentScroll } from "react-native-animated-content-scroll";
 
 const ViewListInterest = () => {
   const { id } = useLocalSearchParams();
@@ -26,30 +27,31 @@ const ViewListInterest = () => {
   return (
     <SafeAreaView style={globalStyles.bgColor}>
       <View style={[globalStyles.bgColor, globalStyles.justifyScreen]}>
-        <ScrollView>
-          <View style={{ marginBottom: 20 }}>
-            <CustomText
-              title="Inversion inicial"
-              subTitle={`$${data?.savings_now}`}
-            />
-            <CustomText title="Años de inversion" subTitle={`${data?.years}`} />
-            {/* <CustomText title="Ahorro por año" subTitle={`$${data?.savings}`} /> */}
-            <CustomText
-              title="Ganancia neta"
-              subTitle={`$${data?.total_gain}`}
-            />
-            <CustomText title="Interes anual" subTitle={`${data?.interest}%`} />
-          </View>
-          <FlatList
-            data={data?.calculate_years}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <AnimatedContentScroll index={index} key={item.id}>
-                <CustomCardListInteret item={item} index={index}  />
-              </AnimatedContentScroll>
-            )}
+        <View style={{ marginBottom: 20 }}>
+          <CustomText
+            title="Inversion inicial"
+            subTitle={`$${data?.savings_now}`}
           />
-        </ScrollView>
+          <CustomText title="Años de inversion" subTitle={`${data?.years}`} />
+          {/* <CustomText title="Ahorro por año" subTitle={`$${data?.savings}`} /> */}
+          <CustomText title="Ganancia neta" subTitle={`$${data?.total_gain}`} />
+          <CustomText title="Interes anual" subTitle={`${data?.interest}%`} />
+        </View>
+        <FlatList
+          data={data?.calculate_years}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <AnimatedContentScroll
+              direction="bottom"
+              duration={500}
+              distance={100}
+              index={index}
+              key={item.id}
+            >
+              <CustomCardListInteret item={item} index={index} />
+            </AnimatedContentScroll>
+          )}
+        />
       </View>
     </SafeAreaView>
   );
