@@ -1,8 +1,10 @@
 import { COLORS } from "@/constants/Colors";
+import { FAVORITE_DATA_STORAGE } from "@/constants/DataStorage";
 import { DataCalculate } from "@/helpers/interfaces";
+import { getItemList, removeItemList, setDataOneMore } from "@/helpers/storeDataList";
 import { globalStyles } from "@/styles/global-styles";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable } from "react-native";
 import { Avatar, Card, IconButton } from "react-native-paper";
 
@@ -11,19 +13,41 @@ interface Props {
 }
 
 const CustomCard = ({ item }: Props) => {
-
   const navigationRouter = useRouter();
-
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [reload, setReload] = useState<boolean>(false);
 
   const onPress = (id: string) => {
     navigationRouter.push(`/${id}`);
-  }
+  };
 
+  const addToFavorite = async () => {
+    try {
+      const itemFavorite = await getItemList(item.id, FAVORITE_DATA_STORAGE);
+      if (itemFavorite === undefined) {
+        await setDataOneMore(item, FAVORITE_DATA_STORAGE);
+        return setIsFavorite(true);
+      }else {
+        const removeFavorite = await removeItemList(item.id,FAVORITE_DATA_STORAGE);
+        if(removeFavorite) setReload(e => !e);
+      }
+    } catch (error) {
+      return setIsFavorite(false);
+    }
+  };
+
+  useEffect(() => {
+    const getDataFavorite = async () => {
+      const itemFavorite = await getItemList(item.id, FAVORITE_DATA_STORAGE);
+      if (itemFavorite === undefined)
+        setIsFavorite(false);
+      else setIsFavorite(true);
+    };
+    getDataFavorite();
+  }, [item, reload]);
 
   return (
-    <Pressable
-      onPress={() => onPress(item.id)}
-    >
+    <Pressable onPress={() => onPress(item.id)}>
       <Card.Title
         style={globalStyles.contentCardList}
         title={`Invercion: $${item.savings_now} | Gains: $${item.total_gain}`}
@@ -41,9 +65,13 @@ const CustomCard = ({ item }: Props) => {
           />
         )}
         right={(props) => (
-          <IconButton {...props} icon="heart" iconColor={undefined}  onPress={() => {}} />
+          <IconButton
+            {...props}
+            icon="heart"
+            iconColor={isFavorite ? COLORS.active : undefined}
+            onPress={() => addToFavorite()}
+          />
         )}
-        
       />
     </Pressable>
   );

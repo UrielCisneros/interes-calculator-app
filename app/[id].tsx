@@ -1,6 +1,7 @@
 // import { AnimatedContentScroll } from "@/components/AnimatedScroll";
 import CustomCardListInteret from "@/components/CustomCardListInteret";
 import CustomText from "@/components/CustomText";
+import { NAME_DATA_STORAGE } from "@/constants/DataStorage";
 import { DataCalculate } from "@/helpers/interfaces";
 import { getItemList } from "@/helpers/storeDataList";
 import { globalStyles } from "@/styles/global-styles";
@@ -15,9 +16,8 @@ const ViewListInterest = () => {
 
   const getDataForId = async () => {
     const productId = Array.isArray(id) ? id[0] : id;
-    const data = await getItemList(productId);
+    const data = await getItemList(productId, NAME_DATA_STORAGE);
     setData(data);
-    console.log({ id, data });
   };
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 // import { AnimatedContentScroll } from "@/components/AnimatedScroll";
 import CustomCard from "@/components/CustomCard";
 import CustomLoader from "@/components/CustomLoader";
+import { NAME_DATA_STORAGE } from "@/constants/DataStorage";
 import { DataCalculate } from "@/helpers/interfaces";
 import { getData } from "@/helpers/storeDataList";
 import { globalStyles } from "@/styles/global-styles";
@@ -25,7 +26,7 @@ const HistoryScreen = () => {
   }, [isFocused]);
 
   const getList = async () => {
-    const data: any = await getData();
+    const data: any = await getData(NAME_DATA_STORAGE);
     if (!data) return setdataList([]);
     setTimeout(() => {
       setdataList(data);

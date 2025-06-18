@@ -1,3 +1,4 @@
+import { NAME_DATA_STORAGE } from "@/constants/DataStorage";
 import { DataCalculate } from "@/helpers/interfaces";
 import { setDataOneMore } from "@/helpers/storeDataList";
 import Currency from "currency-formatter";
@@ -74,7 +75,7 @@ const useFinance = () => {
         ),
         calculate_years: dataYears,
       };
-      const id = await setDataOneMore(finalArrayData);
+      const id = await setDataOneMore(finalArrayData, NAME_DATA_STORAGE);
       return id;
     } catch (error) {
       console.log(error);

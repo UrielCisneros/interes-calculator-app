@@ -1,13 +1,12 @@
-import { NAME_DATA_STORAGE } from "@/constants/DataStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DataCalculate } from "./interfaces";
 
-
-
-
-export const getData = async () => {
+export const getData = async (key: string) => {
   try {
-    const value = await AsyncStorage.getItem(NAME_DATA_STORAGE);
+    const value = await AsyncStorage.getItem(key);
+    console.log({
+      value
+    })
     if (value === null) return false;
     return convertDataOfArray(value);
   } catch (error) {
@@ -15,12 +14,13 @@ export const getData = async () => {
   }
 };
 
-export const setDataOneMore = async (data: DataCalculate) => {
+export const setDataOneMore = async (data: DataCalculate, key: string) => {
   try {
-    let getInfo = await getData();
+    let getInfo = await getData(key);
+    console.log(getInfo)
     if (!getInfo) return false;
     getInfo.push(data);
-    await AsyncStorage.setItem(NAME_DATA_STORAGE, JSON.stringify(getInfo));
+    await AsyncStorage.setItem(key, JSON.stringify(getInfo));
     return data.id;
   } catch (error) {
     return false;
@@ -42,24 +42,44 @@ const convertDataOfArray = (data: string) => {
   }
 };
 
-export const removeDataOfStorage = async () => {
+export const removeDataOfStorage = async (key: string) => {
   try {
-    await AsyncStorage.removeItem(NAME_DATA_STORAGE);
+    await AsyncStorage.removeItem(key);
   } catch (error) {}
 };
 
-export const initialData = async () => {
-  const data = await getData();
-  if (!data) return await AsyncStorage.setItem(NAME_DATA_STORAGE, "[]");
+export const initialData = async (key: string) => {
+  const data = await getData(key);
+  if (!data) return await AsyncStorage.setItem(key, "[]");
 };
 
-export const getItemList = async (id: string) => {
-  const data = await getData();
-  if (!data)
+export const getItemList = async (id: string, key: string) => {
+  try {
+    const data = await getData(key);
+    if (!data)
+      return {
+        status: 1,
+        message: "No found",
+        data: -1,
+      };
+    return data.find((item) => item.id === id);
+  } catch (error) {
     return {
       status: 1,
       message: "No found",
       data: -1,
     };
-  return data.find((item) => item.id === id);
+  }
+};
+
+export const removeItemList = async (id: string, key: string) => {
+  try {
+    const data = await getData(key);
+    if (!data) return false;
+    const newData = data.filter((item) => item.id !== id);
+    await AsyncStorage.setItem(key, JSON.stringify(newData));
+    return true;
+  } catch (error) {
+    return false;
+  }
 };

@@ -43,7 +43,13 @@ const HomeScreen = () => {
   };
 
   const handleSendData = async () => {
-    if (money === "" || years === "" || moreMoneyYear === "" || interestYear === "") return Alert.alert("Ingrese todos los campos.")
+    if (
+      money === "" ||
+      years === "" ||
+      moreMoneyYear === "" ||
+      interestYear === ""
+    )
+      return Alert.alert("Ingrese todos los campos.");
     setLoading(true);
     const id = await calculateInterest({
       money_saving_years: formatClearMoney(moreMoneyYear),
@@ -67,9 +73,8 @@ const HomeScreen = () => {
     setMoney("");
     setInterestYear("");
     setMoreMoneyYear("");
-    setYears('');
-  }
-
+    setYears("");
+  };
 
   return (
     <SafeAreaView style={globalStyles.bgColor}>

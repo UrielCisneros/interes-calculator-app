@@ -1,8 +1,10 @@
 // import { AnimatedContentScroll } from "@/components/AnimatedScroll";
 import CustomCard from "@/components/CustomCard";
 import CustomLoader from "@/components/CustomLoader";
+import { FAVORITE_DATA_STORAGE } from "@/constants/DataStorage";
 import { getData } from "@/helpers/storeDataList";
 import { globalStyles } from "@/styles/global-styles";
+import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, Text, View } from "react-native";
 import { AnimatedContentScroll } from "react-native-animated-content-scroll";
@@ -11,15 +13,15 @@ import { PropsListItem } from "../history";
 const FavoriteScreen = () => {
   const [loading, setLoading] = useState(false);
   const [dataList, setdataList] = useState([]);
+   const isFocused = useIsFocused();
 
   useEffect(() => {
     // setLoading(true);
     getList();
-    return () => setdataList([]);
-  }, []);
+  }, [isFocused]);
 
   const getList = async () => {
-    const data: any = await getData();
+    const data: any = await getData(FAVORITE_DATA_STORAGE);
     if (!data) return setdataList([]);
     setTimeout(() => {
       setdataList(data);

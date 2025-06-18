@@ -1,4 +1,8 @@
 import { COLORS } from "@/constants/Colors";
+import {
+  FAVORITE_DATA_STORAGE,
+  NAME_DATA_STORAGE,
+} from "@/constants/DataStorage";
 import { initialData } from "@/helpers/storeDataList";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -13,8 +17,13 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    initialData();
-    // removeDataOfStorage();
+    initialData(NAME_DATA_STORAGE);
+    // removeDataOfStorage(NAME_DATA_STORAGE);
+    // removeDataOfStorage(FAVORITE_DATA_STORAGE);
+  }, []);
+
+  useEffect(() => {
+    initialData(FAVORITE_DATA_STORAGE);
   }, []);
 
   if (!loaded && !error) return null;
@@ -29,9 +38,9 @@ export default function RootLayout() {
           options={{
             presentation: "modal", // o 'card' si quieres transición normal
             title: "Detalle del producto",
-            headerTitleStyle: {color: "white", fontFamily: "ChakraPetchBold"},
-            headerStyle: {backgroundColor: COLORS.secondary}
-            
+            headerTitleStyle: { color: "white", fontFamily: "ChakraPetchBold" },
+            headerStyle: { backgroundColor: COLORS.secondary },
+
             // headerShown: false,
           }}
         />
